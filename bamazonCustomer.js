@@ -20,8 +20,17 @@ function qureyAllProducts() {
     connection.query("select * from products", function(err,res) {
         if(err) throw err;
         for (var i = 0; i < res.length; i++) {
-            console.log(res[i].item_id + "|" + res[i].product_name + "|" + res[i].department_name + "|" + res[i].price + "|" + res[i].stock_quantity)
+            console.log("ID: " + res[i].item_id + "|" +"Item: "+ res[i].product_name + "|" +"Department: " + res[i].department_name + "|" + "Price: " + res[i].price + "|" + "Quantity: " + res[i].stock_quantity + "\n")
         }
-        connection.end();
+       userPurchase()
     })
+}
+
+function userPurchase() {
+    inquirer.prompt({
+        type: "input",
+        name: "purchase",
+        message: "Enter in the ID number of the item you would like to purchase?"
+    })
+    connection.end();
 }
