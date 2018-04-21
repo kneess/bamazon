@@ -44,11 +44,38 @@ function userPurchase() {
 ]).then(function(answer) {
     var chosenID;
     for (var i = 0; i < results.length; i++) {
-        var chosenID;
+        if (results[i].item_id === parseInt(answer.item)) {
             chosenID = results[i];
+        }
+
     }
+    //console.log(answer.quantityWanted)
     
-        console.log(chosenID.product_name)
+        if(chosenID.stock_quantity < parseInt(answer.quantitywanted)) {
+            console.log("quantity updated")
+        }
+        //     connection.query(
+        //         "UPDATE products set? where ?",
+        //         [
+        //             {
+        //             stock_quantity: chosenID.stock_quantity
+        //         },
+        //         {
+        //             item_id: chosenID.item_id
+        //         }
+        //     ],
+        //     function(error) {
+        //         if (error) throw err;
+        //         console.log("quantity updated successfully!");
+        //         userPurchase();
+        //       }
+        //     )
+        // }
+        // else {
+        //     // bid wasn't high enough, so apologize and start over
+        //     console.log("We currently dont have enough stock to fulfill your order");
+        //     userPurchase();
+        //   }
 
 })
     connection.end();
