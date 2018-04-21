@@ -27,10 +27,30 @@ function qureyAllProducts() {
 }
 
 function userPurchase() {
-    inquirer.prompt({
+    connection.query("select * from products", function(err,results) {
+        if(err) throw err;
+
+    inquirer.prompt(
+        [{
         type: "input",
-        name: "purchase",
+        name: "item",
         message: "Enter in the ID number of the item you would like to purchase?"
-    })
+    },
+     {
+         type: "input",
+         name: "quantityWanted",
+         message: "Enter in the quantity you would like to purchase of the chosen item?",
+     }
+]).then(function(answer) {
+    var chosenID;
+    for (var i = 0; i < results.length; i++) {
+        var chosenID;
+            chosenID = results[i];
+    }
+    
+        console.log(chosenID.product_name)
+
+})
     connection.end();
 }
+    )};
