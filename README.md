@@ -22,7 +22,9 @@
 3. You will then be prompted with two questions asking for the prodduct information you would like to purchase.
 4. if your answers meet the parameters required to make the transaction you will then be provided with a total and the MySql database will be updated as well to show the changes.
 
-1. ####1. Beginning database
+-----------
+
+1. #### Beginning database
 ![Database](/images/pic1.png)
 
 2. #### Initializing
