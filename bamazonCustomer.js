@@ -29,6 +29,7 @@ function qureyAllProducts() {
 function userPurchaseId() {
     connection.query("select * from products", function(err,results) {
         if(err) throw err;
+        var productNumber = results.length;
         console.log("Choose an item from our inventory you would like to purchase item ID's are listed above ^")
     inquirer.prompt(
         [{
@@ -36,21 +37,25 @@ function userPurchaseId() {
         name: "item",
         message: "Enter in the ID number of the item you would like to purchase?",
         validate: function(value) {
-            if (isNaN(value) === false) {
-              return true;
-            }
-            return false;
+            value = parseInt(value);
+            if (isNaN(value)) {
+                return "Input a number please";
+            } else if (value < 1 || value > productNumber) {
+            return "Sorry invalid ID number";
           }
+          return true;
+        }
     },
      {
          type: "input",
          name: "quantityWanted",
          message: "Enter in the quantity you would like to purchase of the chosen item?",
          validate: function(value) {
-            if (isNaN(value) === false) {
-              return true;
+             value = parseInt(value);
+            if (isNaN(value) === true) {
+              return "Input a number please else if you would like to cancel your order please enter 0";
             }
-            return false;
+            return true;
           },
      }
 ]).then(function(answer) {
@@ -59,15 +64,17 @@ function userPurchaseId() {
         if (results[i].item_id === parseInt(answer.item)) {
             chosenID = results[i];
         }
-    }
+    
+    };
 
     
     //console.log(answer.quantityWanted)
     
-        if(chosenID.stock_quantity > parseInt(answer.quantityWanted)) {
+        if(chosenID.stock_quantity >= parseInt(answer.quantityWanted)) {
             
              var newQuantity = chosenID.stock_quantity - parseInt(answer.quantityWanted);
-              var itemid = parseInt(answer.item)
+              var itemid = parseInt(answer.item);
+              var total = chosenID.price * parseInt(answer.quantityWanted);
             connection.query(
                 "UPDATE products SET ? WHERE ?",
                 [
@@ -80,7 +87,7 @@ function userPurchaseId() {
             ],
             function(error) {
                 if (error) throw error; 
-                console.log("Your order has been placed!");
+                console.log("Your order total is: $" + total);
                 connection.end();
               }
             );
