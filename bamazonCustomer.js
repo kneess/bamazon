@@ -34,7 +34,13 @@ function userPurchase() {
         [{
         type: "input",
         name: "item",
-        message: "Enter in the ID number of the item you would like to purchase?"
+        message: "Enter in the ID number of the item you would like to purchase?",
+        validate: function(value) {
+            if (isNaN(value) === false) {
+              return true;
+            }
+            return false;
+          }
     },
      {
          type: "input",
@@ -47,37 +53,37 @@ function userPurchase() {
         if (results[i].item_id === parseInt(answer.item)) {
             chosenID = results[i];
         }
+    };
 
-    }
+    
     //console.log(answer.quantityWanted)
     
-        if(chosenID.stock_quantity < parseInt(answer.quantitywanted)) {
-            console.log("quantity updated")
+        if(chosenID.stock_quantity > parseInt(answer.quantityWanted)) {
+            
+             var newQuantity = chosenID.stock_quantity - parseInt(answer.quantityWanted);
+              var itemid = parseInt(answer.item)
+            connection.query(
+                "UPDATE products SET ? WHERE ?",
+                [
+                    {
+                    stock_quantity: newQuantity
+                },
+                {
+                    item_id: chosenID.item_id
+                }
+            ],
+            function(error) {
+                if (error) throw error;
+                console.log("Your order has been placed!");
+                connection.end();
+              }
+            );
         }
-        //     connection.query(
-        //         "UPDATE products set? where ?",
-        //         [
-        //             {
-        //             stock_quantity: chosenID.stock_quantity
-        //         },
-        //         {
-        //             item_id: chosenID.item_id
-        //         }
-        //     ],
-        //     function(error) {
-        //         if (error) throw err;
-        //         console.log("quantity updated successfully!");
-        //         userPurchase();
-        //       }
-        //     )
-        // }
-        // else {
-        //     // bid wasn't high enough, so apologize and start over
-        //     console.log("We currently dont have enough stock to fulfill your order");
-        //     userPurchase();
-        //   }
-
+        else {
+            // bid wasn't high enough, so apologize and start over
+            console.log("We currently dont have enough stock to fulfill your order please we currently have " + chosenID.stock_quantity + " on hand please enter try another option or another quantity you would like to order");
+            userPurchase();
+          }
 })
-    connection.end();
 }
     )};
