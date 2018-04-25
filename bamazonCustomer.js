@@ -9,7 +9,7 @@ var connection = mysql.createConnection({
     password: "buffman23",
     database: "bamazon"
 });
-
+//connects to the database
 connection.connect(function(err){
     if(err) throw err;
     console.log("connected as ID: " + connection.threadId);
@@ -22,20 +22,23 @@ function qureyAllProducts() {
         for (var i = 0; i < res.length; i++) {
             console.log("ID: " + res[i].item_id + " |" +"Item: "+ res[i].product_name + " |" +"Department: " + res[i].department_name + " |" + "Price: " + res[i].price + " |" + "Quantity: " + res[i].stock_quantity + "\n")
         }
+        //calls the function
        userPurchaseId()
     })
 }
-
+//function which pulls the information from the Mysql database
 function userPurchaseId() {
     connection.query("select * from products", function(err,results) {
         if(err) throw err;
         var productNumber = results.length;
         console.log("Choose an item from our inventory you would like to purchase item ID's are listed above ^")
+        //calls up the prompt and asks the customer some questions
     inquirer.prompt(
         [{
         type: "input",
         name: "item",
         message: "Enter in the ID number of the item you would like to purchase?",
+        //making sure there are no errors
         validate: function(value) {
             value = parseInt(value);
             if (isNaN(value)) {
@@ -71,7 +74,7 @@ function userPurchaseId() {
     //console.log(answer.quantityWanted)
     
         if(chosenID.stock_quantity >= parseInt(answer.quantityWanted)) {
-            
+            //inserts new information to the database
              var newQuantity = chosenID.stock_quantity - parseInt(answer.quantityWanted);
               var itemid = parseInt(answer.item);
               var total = chosenID.price * parseInt(answer.quantityWanted);
