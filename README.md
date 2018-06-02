@@ -17,7 +17,7 @@
 ###How the app works.
 -----------
 
-1. To run the app you will need to call the file in your node terminal.
+1. To run the app you will need to call the server.js file in your node terminal.
 2. It will then provide a list with the available products and product info.
 3. You will then be prompted with two questions asking for the prodduct information you would like to purchase.
 4. if your answers meet the parameters required to make the transaction you will then be provided with a total and the MySql database will be updated as well to show the changes.
